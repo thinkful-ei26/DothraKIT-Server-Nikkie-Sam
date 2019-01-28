@@ -29,11 +29,11 @@ app.use(
 passport.use(localStrategy);
 passport.use(jwtStrategy);
 
-app.use('/api/users', userRouter);
-app.use('/api/auth', authRouter);
+app.use('/users', userRouter);
+app.use('/auth', authRouter);
 
 const jwtAuth = passport.authenticate('jwt', { session: false });
-app.get('/api/protected', jwtAuth, (req, res) => {
+app.get('/protected', jwtAuth, (req, res) => {
   return res.json({
     data: 'rosebud'
   });
