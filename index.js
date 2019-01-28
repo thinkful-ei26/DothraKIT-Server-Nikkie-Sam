@@ -3,12 +3,16 @@
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
+const passport = require('passport');
 
 const { PORT, CLIENT_ORIGIN } = require('./config');
 const { dbConnect } = require('./db-mongoose');
 // const {dbConnect} = require('./db-knex');
-
 const app = express();
+
+const { router: authRouter, localStrategy, jwtStrategy } = require('./auth');
+const { router: userRouter } = require('./users');
+
 
 app.use(
   morgan(process.env.NODE_ENV === 'production' ? 'common' : 'dev', {
@@ -21,6 +25,20 @@ app.use(
     origin: CLIENT_ORIGIN
   })
 );
+
+passport.use(localStrategy);
+passport.use(jwtStrategy);
+
+app.use('/api/users', userRouter);
+app.use('/api/auth', authRouter);
+
+const jwtAuth = passport.authenticate('jwt', { session: false });
+app.get('/api/protected', jwtAuth, (req, res) => {
+  return res.json({
+    data: 'rosebud'
+  });
+});
+
 
 function runServer(port = PORT) {
   const server = app
