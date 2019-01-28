@@ -11,17 +11,18 @@ const { User } = require('../users/models');
 router.use(bodyParser.json());
 
 
-// update wordprogress  on a put
+// get first word on list
 
 router.get('/:userId', (req, res) => {
-  // console.log('userIssssd',req.params.userId);
+  console.log('userIssssd',req.params.userId);
   User.findById(req.params.userId)
     .then(user => {
-      // console.log('>><>>',user.words);
-      res.json(user.words);
+      console.log('>><>>',user.words[1]);
+      res.json(user.words[1]);
     });
 });
 
+// update word progress when answering 
 
 
 

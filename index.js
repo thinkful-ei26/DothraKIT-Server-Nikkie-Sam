@@ -12,7 +12,8 @@ const app = express();
 
 const { router: authRouter, localStrategy, jwtStrategy } = require('./auth');
 const { router: userRouter } = require('./users');
-
+const { router: wordRouter } = require('./words');
+const {words} = require('./data/words');
 
 app.use(
   morgan(process.env.NODE_ENV === 'production' ? 'common' : 'dev', {
@@ -25,19 +26,19 @@ app.use(
     origin: CLIENT_ORIGIN
   })
 );
-
 passport.use(localStrategy);
 passport.use(jwtStrategy);
 
 app.use('/users', userRouter);
 app.use('/auth', authRouter);
+app.use('/word', wordRouter);
 
-const jwtAuth = passport.authenticate('jwt', { session: false });
-app.get('/protected', jwtAuth, (req, res) => {
-  return res.json({
-    data: 'rosebud'
-  });
-});
+// const jwtAuth = passport.authenticate('jwt', { session: false });
+// app.get('/protected', jwtAuth, (req, res) => {
+//   return res.json({
+//     data: `${words}`
+//   });
+// });
 
 
 function runServer(port = PORT) {
