@@ -12,22 +12,18 @@ const { User } = require('../users/models');
 
 router.use(bodyParser.json());
 
-
 // get first word on list
-
 router.get('/:userId', (req, res) => {
   // console.log('userIssssd',req.params.userId);
   User.findById(req.params.userId)
     .then(user => {
-      // console.log('>><>>',user.words[0]);
+      console.log('IN GET',user.words[0]);
       res.status(200).json(user.words[0]);
     });
 });
 
 // update word data after answering 
 router.put('/:userId', (req, res) => {
-  console.log('the req.body is', req.body);
-  // console.log('userIssssd',req.params.userId);
   const { currentCorrect, totalCorrect, totalWrong, next } = req.body;
   let userAnswer={currentCorrect, totalCorrect, totalWrong, next};
 
@@ -39,7 +35,10 @@ router.put('/:userId', (req, res) => {
       //shift the first obj in the array, and push it into the back
       user.words.shift();
       user.words.push(currentFirst);
-      res.status(200);
+      return user.save(); //save the mutated array - its an async fn
+    })
+    .then((user)=>{
+      res.status(200).end();
     });
 });
 
