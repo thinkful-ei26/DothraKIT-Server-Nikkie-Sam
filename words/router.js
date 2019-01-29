@@ -8,7 +8,9 @@ const mongoose = require('mongoose');
 const router = express.Router();
 const { User } = require('../users/models');
 
-router.use(bodyParser.json());
+const jsonParser = bodyParser.json();
+
+// router.use(bodyParser.json());
 
 
 // get first word on list
@@ -18,11 +20,11 @@ router.get('/:userId', (req, res) => {
   User.findById(req.params.userId)
     .then(user => {
       console.log('>><>>',user.words[1]);
-      res.json(user.words[1]);
+      res.status(200).json(user.words[1]);
     });
 });
 
-// update word progress when answering 
+// update word data after answering 
 
 
 
