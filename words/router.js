@@ -16,10 +16,10 @@ const jsonParser = bodyParser.json();
 // get first word on list
 
 router.get('/:userId', (req, res) => {
-  console.log('userIssssd',req.params.userId);
+  // console.log('userIssssd',req.params.userId);
   User.findById(req.params.userId)
     .then(user => {
-      console.log('>><>>',user.words[1]);
+      // console.log('>><>>',user.words[1]);
       res.status(200).json(user.words[1]);
     });
 });
