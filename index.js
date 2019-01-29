@@ -20,6 +20,8 @@ app.use(
     skip: (req, res) => process.env.NODE_ENV === 'test'
   })
 );
+app.use(express.json());
+
 
 app.use(
   cors({
@@ -32,6 +34,7 @@ passport.use(jwtStrategy);
 app.use('/users', userRouter);
 app.use('/auth', authRouter);
 app.use('/word', wordRouter);
+
 
 // const jwtAuth = passport.authenticate('jwt', { session: false });
 // app.get('/protected', jwtAuth, (req, res) => {

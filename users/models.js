@@ -2,8 +2,8 @@
 const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
 const {WordSchema} = require('../words/models');
-const {words} = require('../data/words')
-
+// const {words} = require('../data/words');
+//user.word.english
 
 mongoose.Promise = global.Promise;
 
@@ -12,7 +12,9 @@ const UserSchema =  mongoose.Schema({
   password: {type: String, required: true},
   firstName: {type: String, default: ''},
   lastName: {type: String, default: ''},
-  words: {type: Array, default: words},
+//   words: {type: Array},
+  words: [],
+//   words: [{type: mongoose.Schema.Types.ObjectId, ref: 'Words'}],
 });
 
 UserSchema.methods.serialize = function() {

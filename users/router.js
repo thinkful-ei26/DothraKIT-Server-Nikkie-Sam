@@ -7,7 +7,8 @@ const {User} = require('./models');
 const router = express.Router();
 
 const jsonParser = bodyParser.json();
-
+const {Word} = require('../words/models');
+const {words} = require('../data/words');
 
 // Post to register a new user
 router.post('/', jsonParser, (req, res) => {
@@ -120,10 +121,37 @@ router.post('/', jsonParser, (req, res) => {
         password: hash,
         firstName,
         lastName,
+        // words: [words.map(word => Word.create(word))]
+        words: words.map(word => ({
+          english: word.english,
+          dothraki: word.dothraki,
+          currentCorrect: false,
+          totalCorrect: 0,
+          totalWrong: 0,
+          next:0
+        }))
+
+
       });
-    })
+      // .populate('words');
+    })                 
+    //save line 126 in an array, and that'll be the array the user gets? like user.words=that
+    // add words array, then populate the words array with wordSchma objects 
+
+  //nikki
+    // .then(user => {
+    //   let usersWords = words.map(word=>Word.create(word)); 
+    //   console.log('The users personal words are', usersWords);
+    //   user.words = usersWords;
+    // } 
+    // )    
+
+    // .then( user => user.words.map(word => Word.create(word)))
+    // .then(user => users.words.create(map(questions => User.words.question = WordSchema.question))    
+    //within the then above user.save
     .then(user => {
       return res.status(201).json(user.serialize());
+
     })
     .catch(err => {
       // Forward validation errors on to the client, otherwise give a 500
