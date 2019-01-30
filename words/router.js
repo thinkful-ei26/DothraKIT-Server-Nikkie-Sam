@@ -46,12 +46,16 @@ router.put('/:userId', (req, res) => {
       console.log('NEW LOCATION IS', newLocation); //2
 
       //change the current head to whoever answered node's next pointer is addressed to 
-      user.head = currentNode.next; //1
+      user.head = (currentNode.next>0 ? currentNode.next : 0); //1
       console.log('NEW HEAD IS', user.head);
 
       let current=currentNode;
       let counter=0;
-      while(counter<newLocation){
+      while(counter<newLocation && counter < user.words.length - 1){
+        // if(user.words[current.next] === undefined){
+        //   return current;
+        // }
+        // && user.words[current.next] !== undefined
         current = user.words[current.next];
         counter++;
         //if we reach the end of the LL, stop counting 
