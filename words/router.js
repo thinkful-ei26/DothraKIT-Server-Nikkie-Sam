@@ -24,8 +24,8 @@ router.get('/:userId', (req, res) => {
 
 // update word data after answering 
 router.put('/:userId', (req, res) => {
-  const { currentCorrect, totalCorrect, totalWrong, next } = req.body;
-  let userAnswer={currentCorrect, totalCorrect, totalWrong, next};
+  const { totalTries, currentCorrect, totalCorrect, totalWrong, next } = req.body;
+  let userAnswer={currentCorrect, totalCorrect, totalWrong, next, totalTries};
 
   User.findById(req.params.userId)
     .then(user => {

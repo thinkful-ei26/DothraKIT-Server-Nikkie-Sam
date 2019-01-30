@@ -128,6 +128,7 @@ router.post('/', jsonParser, (req, res) => {
           currentCorrect: false,
           totalCorrect: 0,
           totalWrong: 0,
+          totalTries:0,
           next:0
         }))
 
