@@ -2,8 +2,6 @@
 
 const express = require('express');
 const bodyParser = require('body-parser');
-const passport = require('passport');
-const mongoose = require('mongoose');
 
 const router = express.Router();
 const { User } = require('../users/models');
@@ -15,18 +13,35 @@ router.get('/:userId', (req, res) => {
   User.findById(req.params.userId)
     .then(user => {
       console.log('THE WORD SENT BACK IN FETCH IS', user.words[user.head]);
-      res.status(200).json(user.words[user.head]);
+      res.status(200).json({dothraki: user.words[user.head].dothraki, english: user.words[user.head].english});
     });
 });
 
 // update word data after answering 
 router.put('/:userId', (req, res) => {
-  const { totalTries, currentCorrect, totalCorrect, totalWrong, next, mValue } = req.body;
-  let userAnswer={currentCorrect, totalCorrect, totalWrong, next, totalTries, mValue};
+  console.log("HERE");
+  let userAnswer=req.body.answer; //not sure how I'm sending the users response
+  console.log('THE USER ANSWER IS', userAnswer);
+  let answerCorrect=false;
+  let individualWordScore = 0;
 
   User.findById(req.params.userId)
     .then(user => {
-      //We can change it and move the logic to the backend :) But we're not sure if our algorithm is even working
+      if (userAnswer === user.words[user.head].english){
+        user.words[user.head].totalCorrect+=1;
+        user.words[user.head].totalTries+=1;
+        user.words[user.head].mValue*=2;
+        answerCorrect= true;
+        console.log('CORRECT');
+      }
+      else {
+        user.words[user.head].totalTries+=1;
+        user.words[user.head].mValue=1;  
+        answerCorrect=false;  
+      }
+
+      individualWordScore = Math.floor(user.words[user.head].totalCorrect/user.words[user.head].totalTries)*100;
+
       //save the value of the current head
       let currentHead = user.head; 
       console.log('current Head is',currentHead);
@@ -37,9 +52,9 @@ router.put('/:userId', (req, res) => {
 
       //We need to do this to update the values update the currentNode with the user's answer and save it back into user.words: 
       // only should show updated mvalue
-      currentNode = Object.assign({},currentNode, userAnswer);
-      user.words[currentHead]=currentNode;
-      console.log('CURRENT UPDATED NODE IN WORDS IS', user.words[currentHead]);
+      // currentNode = Object.assign({},currentNode, userAnswer);
+      // user.words[currentHead]=currentNode;
+      // console.log('CURRENT UPDATED NODE IN WORDS IS', user.words[currentHead]);
 
       //find the location of the answered node based on mValue
       let newLocation = currentNode.mValue; 
@@ -68,12 +83,12 @@ router.put('/:userId', (req, res) => {
     .then((user)=>{
       let current= user.words[user.head];
     
+      //printing out each word to examine it
       while(current!==undefined){
         console.log(current.dothraki);
         current = user.words[current.next];
       }
-      //printing out each word to examine it
-      res.status(200).end();
+      res.status(200).json({answerCorrect, individualWordScore});
     });
 });
 

@@ -7,7 +7,6 @@ const {User} = require('./models');
 const router = express.Router();
 
 const jsonParser = bodyParser.json();
-const {Word} = require('../words/models');
 const {words} = require('../data/words');
 
 // Post to register a new user
@@ -122,7 +121,6 @@ router.post('/', jsonParser, (req, res) => {
         firstName,
         lastName,
         head,
-        //it wont work bc it doesnt know what head is -- but we can bring it in from req.body
         words: words.map((word, index) => ({
           english: word.english,
           dothraki: word.dothraki,
