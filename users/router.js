@@ -94,7 +94,7 @@ router.post('/', jsonParser, (req, res) => {
     });
   }
 
-  let {username, password, firstName = '', lastName = ''} = req.body;
+  let {head, username, password, firstName = '', lastName = ''} = req.body;
   // Username and password come in pre-trimmed, otherwise we throw an error
   // before this
   firstName = firstName.trim();
@@ -121,35 +121,21 @@ router.post('/', jsonParser, (req, res) => {
         password: hash,
         firstName,
         lastName,
-        // words: [words.map(word => Word.create(word))]
-        words: words.map(word => ({
+        head,
+        //it wont work bc it doesnt know what head is -- but we can bring it in from req.body
+        words: words.map((word, index) => ({
           english: word.english,
           dothraki: word.dothraki,
           currentCorrect: false,
           totalCorrect: 0,
           totalWrong: 0,
           totalTries:0,
-          next:0
+          next: index+1,
+          mValue: 1
         }))
-
-
       });
-      // .populate('words');
-    })                 
-    //save line 126 in an array, and that'll be the array the user gets? like user.words=that
-    // add words array, then populate the words array with wordSchma objects 
+    })                     
 
-  //nikki
-    // .then(user => {
-    //   let usersWords = words.map(word=>Word.create(word)); 
-    //   console.log('The users personal words are', usersWords);
-    //   user.words = usersWords;
-    // } 
-    // )    
-
-    // .then( user => user.words.map(word => Word.create(word)))
-    // .then(user => users.words.create(map(questions => User.words.question = WordSchema.question))    
-    //within the then above user.save
     .then(user => {
       return res.status(201).json(user.serialize());
 
