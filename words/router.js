@@ -52,10 +52,7 @@ router.put('/:userId', (req, res) => {
       let current=currentNode;
       let counter=0;
       while(counter<newLocation && counter < user.words.length - 1){
-        // if(user.words[current.next] === undefined){
-        //   return current;
-        // }
-        // && user.words[current.next] !== undefined
+      
         current = user.words[current.next];
         counter++;
         //if we reach the end of the LL, stop counting 
