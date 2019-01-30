@@ -130,7 +130,7 @@ router.post('/', jsonParser, (req, res) => {
           totalCorrect: 0,
           totalWrong: 0,
           totalTries:0,
-          next: index+1,
+          next: index===words.length-1 ? -1 : index+1,
           mValue: 1
         }))
       });

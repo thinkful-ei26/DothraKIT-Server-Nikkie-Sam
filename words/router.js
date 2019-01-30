@@ -8,14 +8,13 @@ const mongoose = require('mongoose');
 const router = express.Router();
 const { User } = require('../users/models');
 
-// const jsonParser = bodyParser.json();
-
 router.use(bodyParser.json());
 
 // get first word on list
 router.get('/:userId', (req, res) => {
   User.findById(req.params.userId)
     .then(user => {
+      console.log('THE WORD SENT BACK IN FETCH IS', user.words[user.head]);
       res.status(200).json(user.words[user.head]);
     });
 });
@@ -25,55 +24,59 @@ router.put('/:userId', (req, res) => {
   const { totalTries, currentCorrect, totalCorrect, totalWrong, next, mValue } = req.body;
   let userAnswer={currentCorrect, totalCorrect, totalWrong, next, totalTries, mValue};
 
-  //   User.findById(req.params.userId)
-  //     .then(user => {
-  //       //update the obj at user.words[0] using the  spread operator or object.assign  to update the stats
-  //       let currentFirst = user.words[0];
-  //       currentFirst = Object.assign({},currentFirst, userAnswer);
-  //       //shift the first obj in the array, and push it into the back
-  //       user.words.shift();
-  //       user.words.push(currentFirst);
-  //       return user.save(); //save the mutated array - its an async fn
-  //     })
-  //     .then((user)=>{
-  //       res.status(200).end();
-  //     });
-  // });
   User.findById(req.params.userId)
     .then(user => {
+      //We can change it and move the logic to the backend :) But we're not sure if our algorithm is even working
       //save the value of the current head
-      let currentHead = user.head;
+      let currentHead = user.head; 
       console.log('current Head is',currentHead);
+
       // save the node that you just answered 
       let currentNode = user.words[currentHead];
       console.log('current node is', currentNode);
-      //update the currentNode with the user's answer: 
+
+      //We need to do this to update the values update the currentNode with the user's answer and save it back into user.words: 
+      // only should show updated mvalue
       currentNode = Object.assign({},currentNode, userAnswer);
-      //somethihng needs to happen with currentNode...
-      user.words[currentHead]=currentNode; //trying to save currentNodes values somwhere 
-      console.log('CURRENT UPDATED NODE IS', user.words[currentHead]);
+      user.words[currentHead]=currentNode;
+      console.log('CURRENT UPDATED NODE IN WORDS IS', user.words[currentHead]);
+
       //find the location of the answered node based on mValue
-      let newLocation = currentNode.mValue;
-      console.log('NEW LOCATION IS', newLocation);
-      //so we want to swap with whatever's currently at index 1 which is B so B will show then A again...i thinkya?
+      let newLocation = currentNode.mValue; 
+      console.log('NEW LOCATION IS', newLocation); //2
 
       //change the current head to whoever answered node's next pointer is addressed to 
-      user.head = currentNode.next;
+      user.head = currentNode.next; //1
       console.log('NEW HEAD IS', user.head);
-      //find the insertion point stuck here
-      let swapWith = user.words[newLocation];
-      console.log('SWAP WITH IS', swapWith);
-      //insert the node by changing the next pointer sure!
-      currentNode.next = swapWith.next;
-      swapWith.next = currentHead;
-      return user.save();
+
+      let current=currentNode;
+      let counter=0;
+      while(counter<newLocation){
+        current = user.words[current.next];
+        counter++;
+        //if we reach the end of the LL, stop counting 
+      }
+      console.log('NODE AFTER WHILE LOOP IS', current);
+      //node is now where we want our currentNode to be inserted
+      
+      user.words[currentHead].next = current.next; 
+      current.next = currentHead;
+
+      //save all the updates we just made to user.head and user.words:
+      return User.findByIdAndUpdate({_id:req.params.userId}, {words: user.words, head: user.head}, {new: true});
     })
     .then((user)=>{
+      let current= user.words[user.head];
+    
+      while(current!==undefined){
+        console.log(current.dothraki);
+        current = user.words[current.next];
+      }
+      //printing out each word to examine it
       res.status(200).end();
     });
 });
 
-
 module.exports = {router};
-//LOL WHAT Your average score on this word is: NaN% -- gotta fix that too....
+//Your average score on this word is: NaN% -- gotta fix that too....
 

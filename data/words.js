@@ -14,10 +14,6 @@ const words = [
     dothraki: 'affin',
   },
   {
-    english: 'silence',
-    dothraki: 'acchakat',
-  },
-  {
     english: 'winter',
     dothraki: 'aheshke',
   },
