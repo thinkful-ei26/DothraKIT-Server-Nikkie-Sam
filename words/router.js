@@ -41,7 +41,9 @@ router.put('/:userId', (req, res) => {
         answerCorrect=false;  
       }
 
-      individualWordScore = Math.floor(user.words[user.head].totalCorrect/user.words[user.head].totalTries)*100;
+      individualWordScore = Math.floor((user.words[user.head].totalCorrect/user.words[user.head].totalTries)*100);
+
+      console.log('THE WORD SCORE IS', individualWordScore);
 
       //save the value of the current head
       let currentHead = user.head; 
