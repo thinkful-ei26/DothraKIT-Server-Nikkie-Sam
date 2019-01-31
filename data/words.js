@@ -3,7 +3,7 @@
 const words = [
   {
     english: 'it is known',
-    dothraki: 'Me nem nesa.',
+    dothraki: 'Me nem nesa',
   },
   {
     english:  'yes',
@@ -35,11 +35,11 @@ const words = [
   },
   {
     english: 'you make me itch',
-    dothraki: 'Yer affesi anni.',
+    dothraki: 'Yer affesi anni',
   },
   {
     english: 'i will let you live',
-    dothraki: 'Anha vazhak yeraan thirat.',
+    dothraki: 'Anha vazhak yeraan thirat',
   }
 ];
 
