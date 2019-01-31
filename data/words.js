@@ -2,46 +2,45 @@
 
 const words = [
   {
-    english: 'silence',
-    dothraki: 'acchakat',
+    english: 'it is known',
+    dothraki: 'Me nem nesa.',
   },
   {
-    english: 'smelly',
-    dothraki: 'achra',
+    english:  'yes',
+    dothraki: 'Sek, k\'athjilari',
   },
   {
-    english: 'when',
-    dothraki: 'affin',
+    english:  'no',
+    dothraki: 'Vos. Vosecchi!',
   },
   {
-    english: 'winter',
-    dothraki: 'aheshke',
+    english: 'thank you',
+    dothraki: 'San athchomari yeraan!',
   },
   {
-    english: 'yes',
-    dothraki: 'ai',
+    english: 'happy birthday',
+    dothraki: 'Asshekhqoyi vezhvena!',
   },
   {
-    english: 'tonight',
-    dothraki: 'ajjalan',
+    english: 'goodbye',
+    dothraki: 'Hajas!',
   },
   {
-    english: 'more',
-    dothraki: 'alikh',
+    english: 'get lost',
+    dothraki: 'Es havazhaan!',
   },
   {
-    english: 'finish',
-    dothraki: 'annakholat',
+    english: 'annoying woman',
+    dothraki: 'Annvikeesi',
   },
   {
-    english: 'curved sword',
-    dothraki: 'arakh',
+    english: 'you make me itch',
+    dothraki: 'Yer affesi anni.',
   },
   {
-    english: 'death',
-    dothraki: 'athdrivar',
-  },
+    english: 'i will let you live',
+    dothraki: 'Anha vazhak yeraan thirat.',
+  }
 ];
-
 
 module.exports = {words};
