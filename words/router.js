@@ -21,6 +21,7 @@ router.get('/:userId', (req, res) => {
 router.put('/:userId', (req, res) => {
   console.log("HERE");
   let userAnswer=req.body.answer; //not sure how I'm sending the users response
+  userAnswer= userAnswer.trim().toLowerCase();
   console.log('THE USER ANSWER IS', userAnswer);
   let answerCorrect=false;
   let individualWordScore = 0;
