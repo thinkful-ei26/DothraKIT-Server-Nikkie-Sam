@@ -13,6 +13,7 @@ const app = express();
 const { router: authRouter, localStrategy, jwtStrategy } = require('./auth');
 const { router: userRouter } = require('./users');
 const { router: wordRouter } = require('./words');
+const { router: overallProgressRouter } = require('./overallProgress');
 const {words} = require('./data/words');
 
 app.use(
@@ -34,6 +35,7 @@ passport.use(jwtStrategy);
 app.use('/users', userRouter);
 app.use('/auth', authRouter);
 app.use('/word', wordRouter);
+app.use('/overallProgress', overallProgressRouter);
 
 
 // const jwtAuth = passport.authenticate('jwt', { session: false });
