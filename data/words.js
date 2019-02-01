@@ -2,43 +2,43 @@
 
 const words = [
   {
-    english: 'it is known',
+    english: 'It Is Known',
     dothraki: 'Me nem nesa',
   },
   {
-    english:  'yes',
+    english:  'Yes',
     dothraki: 'Sek, k\'athjilari',
   },
   {
-    english:  'no',
+    english:  'No',
     dothraki: 'Vos. Vosecchi!',
   },
   {
-    english: 'thank you',
+    english: 'Thank You',
     dothraki: 'San athchomari yeraan!',
   },
   {
-    english: 'happy birthday',
+    english: 'Happy Birthday',
     dothraki: 'Asshekhqoyi vezhvena!',
   },
   {
-    english: 'goodbye',
+    english: 'Goodbye',
     dothraki: 'Hajas!',
   },
   {
-    english: 'get lost',
+    english: 'Get Lost',
     dothraki: 'Es havazhaan!',
   },
   {
-    english: 'annoying woman',
+    english: 'Annoying Woman',
     dothraki: 'Annvikeesi',
   },
   {
-    english: 'you make me itch',
+    english: 'You Make Me Itch',
     dothraki: 'Yer affesi anni',
   },
   {
-    english: 'i will let you live',
+    english: 'I Will Let You Live',
     dothraki: 'Anha vazhak yeraan thirat',
   }
 ];
