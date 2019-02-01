@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon index.js",
-    "mocha": "mocha --exit --file test/setup.test.js --timeout 0000",
+    "mocha": "mocha --exit --file test/setup.test.js --timeout 10000",
     "mocha-exit0": "mocha --exit --file test/setup.test.js  --timeout 10000|| true",
     "test": "nodemon --exec npm run mocha-exit0",
     "cover": "nodemon --exec nyc --reporter=lcov --reporter=text-summary npm run mocha-exit0",
