@@ -28,7 +28,7 @@ router.put('/:userId', (req, res) => {
 
   User.findById(req.params.userId)
     .then(user => {
-      if (userAnswer === user.words[user.head].english){
+      if (userAnswer === user.words[user.head].english.toLowerCase()){
         user.words[user.head].totalCorrect+=1;
         user.words[user.head].totalTries+=1;
         user.words[user.head].mValue*=2;
