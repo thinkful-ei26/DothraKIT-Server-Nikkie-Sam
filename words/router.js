@@ -96,6 +96,6 @@ router.put('/:userId', (req, res) => {
     });
 });
 
-module.exports = {router};
+module.exports = { router };
 //Your average score on this word is: NaN% -- gotta fix that too....
 
