@@ -21,7 +21,7 @@ router.get('/:userId', (req, res) => {
 
       //progress = sum of the masteries / number of total words
       let progress = sumMastery / user.words.length * 100;
-      progress = Math.round(progress * 100) / 100
+      progress = Math.round(progress * 100) / 100;
       res.status(200).json(progress);
     });
 });
