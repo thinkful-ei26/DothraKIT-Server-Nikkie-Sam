@@ -101,28 +101,74 @@ describe('Noteful API - Users', function () {
       });
 
 
-    //   it.only('should send back correct res with correct answer', function () {
-    //     const updateItem = {answer: 'it is known'};
-    //     let data;
-    //     return User.findOne()
-    //       .then(_data => {
-    //         data = _data;
-    //         // console.log('>>>>',data);
-    //         return chai.request(app)
-    //           .put(`/word/${data.id}`)
-    //           .set('Authorization', `Bearer ${token}`)
-    //           .send(updateItem);
-    //       })
-    //       .then(function (res) {
-    //         console.log('>>>>>',data)
-    //         expect(res).to.have.status(200);
-    //         expect(res).to.be.json;
-    //         expect(res.body).to.be.a('object');
-    //         expect(res.body).to.include.keys('answerCorrect', 'individualWordScore');
-    //         expect(res.body.answerCorrect).to.equal(data);
+      it('should send back correct res with correct answer', function () {
+        const updateItem = {answer: 'no'};
+        let data;
+        return User.findOne()
+          .then(_data => {
+            data = _data;
+            // console.log('>>>>',data);
+            return chai.request(app)
+              .put(`/word/${data.id}`)
+              .set('Authorization', `Bearer ${token}`)
+              .send(updateItem);
+          })
+          .then(function (res) {
+            console.log('>>>>>',data[0])
+            expect(res).to.have.status(200);
+            expect(res).to.be.json;
+            expect(res.body).to.be.a('object');
+            expect(res.body).to.include.keys('answerCorrect', 'individualWordScore');
+            expect(res.body.answerCorrect).to.equal(true);
+            expect(res.body.individualWordScore).to.equal(100);
+
         
-    //       });
-    //   });
+          });
+      });
+      it('should send back correct res with wrong answer', function () {
+        const updateItem = {answer: 'yes'};
+        let data;
+        return User.findOne()
+          .then(_data => {
+            data = _data;
+            console.log('>>>>',data);
+            return chai.request(app)
+              .put(`/word/${data.id}`)
+              .set('Authorization', `Bearer ${token}`)
+              .send(updateItem);
+          })
+          .then(function (res) {
+            // console.log('>>>>>',data[0])
+            expect(res).to.have.status(200);
+            expect(res).to.be.json;
+            expect(res.body).to.be.a('object');
+            expect(res.body).to.include.keys('answerCorrect', 'individualWordScore');
+            expect(res.body.answerCorrect).to.equal(false);
+            expect(res.body.individualWordScore).to.equal(0);
+
+        
+          });
+      });
+
+      it('should send back an 404 error if user id is bad', function () {
+        const id = '012345467896585';
+        let data;
+        return User.findOne()
+          .then(_data => {
+            data = _data;
+            // console.log('>>>>',data);
+            return chai.request(app)
+              .put(`/word/${id}`)
+              .set('Authorization', `Bearer ${token}`)
+            //   .send(updateItem);
+          })
+          .then(function (res) {
+            // console.log('>>>>>',res.body)
+            expect(res).to.have.status(400);
+       
+            
+          });
+      });
     
     
     

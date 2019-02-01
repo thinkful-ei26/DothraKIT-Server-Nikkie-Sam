@@ -2,6 +2,7 @@
 
 const express = require('express');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 
 const router = express.Router();
 const { User } = require('../users/models');
@@ -18,13 +19,21 @@ router.get('/:userId', (req, res) => {
 });
 
 // update word data after answering 
-router.put('/:userId', (req, res) => {
-  console.log("HERE");
+router.put('/:userId', (req, res, next) => {
+  if (!mongoose.Types.ObjectId.isValid(req.params.userId)) {
+    const err = new Error('The `id` is not valid');
+    err.status = 400;
+    console.log('bad id');
+    return next(err);
+  }
+  // console.log('HERE');
   let userAnswer=req.body.answer; //not sure how I'm sending the users response
   userAnswer= userAnswer.trim().toLowerCase();
   console.log('THE USER ANSWER IS', userAnswer);
   let answerCorrect=false;
   let individualWordScore = 0;
+
+
 
   User.findById(req.params.userId)
     .then(user => {
@@ -93,6 +102,10 @@ router.put('/:userId', (req, res) => {
         current = user.words[current.next];
       }
       res.status(200).json({answerCorrect, individualWordScore});
+      
+    })
+    .catch(err => {
+      next(err);
     });
 });
 
