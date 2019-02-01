@@ -23,7 +23,7 @@ const words = [
   },
   {
     english: 'Goodbye',
-    dothraki: 'Hajas!',
+    dothraki: 'Hajas!', 
   },
   {
     english: 'Get Lost',

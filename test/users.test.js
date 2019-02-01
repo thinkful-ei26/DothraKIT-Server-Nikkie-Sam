@@ -64,7 +64,7 @@ describe('Noteful API - Users', function () {
           expect(res.body).to.have.keys('id', 'username', 'firstName', 'head', 'lastName', 'words');
           expect(res.body.id).to.exist;
           expect(res.body.username).to.equal(username);
-          return User.findOne({ username });
+          return User.findOne({ username: 'exampleUser'}); 
         })
         .then(user => {
           expect(user).to.exist;
