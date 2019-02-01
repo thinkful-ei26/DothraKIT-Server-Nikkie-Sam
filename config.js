@@ -11,7 +11,7 @@ module.exports = {
         process.env.MONGODB_URI || 'mongodb://localhost/dothrakit',
   TEST_DATABASE_URL:
         process.env.TEST_DATABASE_URL ||
-        'mongodb://localhost/thinkful-backend-test'
+        'mongodb://localhost/dothrakit-backend-test'
   // DATABASE_URL:
   //     process.env.DATABASE_URL || 'postgres://localhost/thinkful-backend',
   // TEST_DATABASE_URL:
