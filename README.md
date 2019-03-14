@@ -1,45 +1,114 @@
-# Thinkful Backend Template
+# DothraKit Server
 
-A template for developing and deploying Node.js apps.
+## Table of Contents
+- [Introduction](#introduction)
+- [Tech Stack](#tech-stack)
+- [Server Structure](#app-structure)
+- [Data Models](#data-models)
+  - [User Schema](#user-schema)
+- [API Endpoints](#api-endpoints)
+  - [Users](#users)
+  - [Authentication](#authentication)
+  - [Words](#words)
+ 
 
-## Getting started
+## Introduction
+This is the server documentation for [DothraKit](https://dothrakit.herokuapp.com/), a language learning app for Dothraki.
 
-### Setting up a project
+## Tech Stack
+DothraKit server is powered by the following,
+* Node
+* Express
+* MongoDB
+* Mongoose
+* Passport
+* BCryptJS
+* JSONWebToken
+* dotEnv
+* Mocha
+* Chai
 
-* Move into your projects directory: `cd ~/YOUR_PROJECTS_DIRECTORY`
-* Clone this repository: `git clone https://github.com/Thinkful-Ed/backend-template YOUR_PROJECT_NAME`
-* Move into the project directory: `cd YOUR_PROJECT_NAME`
-* Install the dependencies: `npm install`
-* Create a new repo on GitHub: https://github.com/new
-    * Make sure the "Initialize this repository with a README" option is left unchecked
-* Update the remote to point to your GitHub repository: `git remote set-url origin https://github.com/YOUR_GITHUB_USERNAME/YOUR_REPOSITORY_NAME`
+## App Structure
+DothraKit follows Node's convention of processing codes from top to bottom and left to right. The most-used routes will be placed at top, followed by lesser-used routes.
 
-### Working on the project
+Route hierarchy is as follows,
+```
+Users
+Authentication
+Words
+```
 
-* Move into the project directory: `cd ~/YOUR_PROJECTS_DIRECTORY/YOUR_PROJECT_NAME`
-* Run the development task: `npm start`
-    * Starts a server running at http://localhost:8080
-    * Automatically restarts when any of your files change
+Application data is persisted via MongoDB. Document mapping is handled by Mongoose. RESTful API architecture is also used for data creation and retrieval.
 
-## Databases
+## Data Models
+DothraKit employs Mongoose document schema to construct its data model: users.
 
-By default, the template is configured to connect to a MongoDB database using Mongoose.  It can be changed to connect to a PostgreSQL database using Knex by replacing any imports of `db-mongoose.js` with imports of `db-knex.js`, and uncommenting the Postgres `DATABASE_URL` lines in `config.js`.
+### User Schema
+```
+username: {type: String, required: true,unique: true},
+  password: {type: String, required: true},
+  firstName: {type: String, default: ''},
+  lastName: {type: String, default: ''},
+  words: [],
+  head: {type: Number, default: 0 },
+```
 
-## Deployment
+## API Endpoints
+All requests and responses are in JSON format.
 
-Requires the [Heroku CLI client](https://devcenter.heroku.com/articles/heroku-command-line).
+Action | Path |
+--- | --- |
+Users | https://dothrakit-server.herokuapp.com/api/users |
+Authentication | https://dothrakit-server.herokuapp.com/api/auth |
+Words | https://dothrakit-server.herokuapp.com/api/word |
 
-### Setting up the project on Heroku
 
-* Move into the project directory: `cd ~/YOUR_PROJECTS_DIRECTORY/YOUR_PROJECT_NAME`
-* Create the Heroku app: `heroku create PROJECT_NAME`
+### Users
+`POST` request to endpoint `/` is for creating user documents. It accepts the following request body,
+```
+{
+  username,
+  password,
+  firstName, // optional
+  lastName // optional
+}
+```
+`username` will be rejected if it is not a unique. Once a user document is successfully created, this will be the server's response.
+```
+{
+   username: this.username,
+    firstName: this.firstName || '',
+    lastName: this.lastName || '',
+    id: this._id,
+    words: this.words,
+    head: this.head,
+}
+```
 
-* If your backend connects to a database, you need to configure the database URL:
-    * For a MongoDB database: `heroku config:set DATABASE_URL=mongodb://USERNAME:PASSWORD@HOST:PORT/DATABASE_NAME`
-    * For a PostgreSQL database: `heroku config:set DATABASE_URL=postgresql://USERNAME:PASSWORD@HOST:PORT/DATABASE_NAME`
+### Authentication
+`POST` to `/login` endpoint for creation of JWT. It accepts the following request body,
+```
+{
+  username,
+  password
+}
+```
+This endpoint takes in the username and verifies the password. When validated, the server will respond with a token,
+```
+{
+  authToken
+}
+```
 
-* If you are creating a full-stack app, you need to configure the client origin: `heroku config:set CLIENT_ORIGIN=https://www.YOUR_DEPLOYED_CLIENT.com`
+`POST` to `/refresh` will send back another token with a newer expiriation. No request body is necessary as an existing and valid JWT must be provided to access this endpoint.
 
-### Deploying to Heroku
+### Words
+`GET` request to`/:userId` will return a word belonging to a user, respectively, with `:userId` being the user's ID.
 
-* Push your code to Heroku: `git push heroku master`
+`PUT` request to `/:userId` will modify propertys of words object with the same user ID. It accepts the following request body,
+```
+{
+ userAnswer
+}
+```
+
